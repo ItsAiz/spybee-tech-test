@@ -1,8 +1,10 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
+const env = process.env.NEXT_PUBLIC_REACT_ENV;
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  reactCompiler: true,
+  ...(env !== 'DEV' && {
+    devIndicators: false,
+  }),
 };
 
 export default nextConfig;

@@ -1,3 +1,6 @@
+@import '../styles/reset.css';
+@import '../shared/theme/variables.css';
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -19,7 +22,9 @@ body {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-primary);
+  font-size: var(--text-md);
+  line-height: var(--lh-normal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -39,4 +44,12 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+.container {
+  width: 100%;
+  margin-inline: auto;
+  max-width: var(--container-xl);
+  height: 100dvh;
+  background-color: var(--base-white);
 }
