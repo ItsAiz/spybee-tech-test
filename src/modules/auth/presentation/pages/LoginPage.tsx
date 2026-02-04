@@ -3,6 +3,7 @@ import { GridItem } from '@/shared/components/Grid/GridItem';
 import { Input } from '@/shared/components/Input/Input';
 import { Button } from '@/shared/components/Button/Button';
 import styles from './styles.module.css';
+import { Spacing } from '@/shared/components/Spacing/Spacing';
 
 const LoginPage = () => {
   return (
@@ -21,6 +22,7 @@ const LoginPage = () => {
             placeholder={'Ingresa la contraseña'}
             isFullWidth
           />
+          <Spacing spy={24} />
         </GridItem>
         <GridItem span={12}>
           <Button text={'Iniciar sesión'} isFullWidth />
