@@ -1,0 +1,54 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--space-4);
+  padding: 22px var(--space-6);
+  width: 100%;
+}
+
+.withSidebar {
+  padding-inline: 22px;
+}
+
+.subGrid {
+  padding: 0;
+}
+
+@media (min-width: 960px) {
+  .grid {
+    gap: var(--space-5);
+    padding: 20px 130px;
+  }
+
+  .withSidebar {
+    padding-inline: 20px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid {
+    gap: var(--space-6);
+    padding: 24px 120px;
+  }
+
+  .withSidebar {
+    padding-inline: 24px;
+  }
+}
+
+.item {
+  min-width: 0;
+  grid-column: span var(--col-span, 12);
+}
+
+@media (min-width: 600px) {
+  .item {
+    grid-column: span var(--col-landscape, var(--col-span, 12));
+  }
+}
+
+@media (min-width: 1024px) {
+  .item {
+    grid-column: span var(--col-desktop, var(--col-landscape, var(--col-span, 12)));
+  }
+}

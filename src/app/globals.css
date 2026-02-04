@@ -47,9 +47,17 @@ a {
 }
 
 .container {
-  width: 100%;
-  margin-inline: auto;
-  max-width: var(--container-xl);
   height: 100dvh;
-  background-color: var(--base-white);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--secondary-50);
+}
+
+.container-children {
+  margin-top: var(--layout-header-height);
+  height: calc(100dvh - var(--layout-header-height));
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
 }

@@ -22,7 +22,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
     <html lang={'en'}>
       <body className={`${geistSans.variable} ${geistMono.variable} container`}>
         <Header />
-        {children}
+        <div className={'container-children'}>{children}</div>
       </body>
     </html>
   );

@@ -1,7 +1,31 @@
+import { Grid } from '@/shared/components/Grid/Grid';
+import { GridItem } from '@/shared/components/Grid/GridItem';
+import { Input } from '@/shared/components/Input/Input';
+import { Button } from '@/shared/components/Button/Button';
+import styles from './styles.module.css';
+
 const LoginPage = () => {
   return (
-    <div>
-      <h1 style={{ color: 'var(--secondary-600)' }}>LoginPage</h1>
+    <div className={styles['login-container']}>
+      <Grid withSidebar>
+        <GridItem span={12}>
+          <Input
+            labelText={'Usuario'}
+            placeholder={'Ingresa el usuario'}
+            isFullWidth
+          />
+         </GridItem>
+        <GridItem span={12}>
+          <Input
+            labelText={'Contraseña'}
+            placeholder={'Ingresa la contraseña'}
+            isFullWidth
+          />
+        </GridItem>
+        <GridItem span={12}>
+          <Button text={'Iniciar sesión'} isFullWidth />
+        </GridItem>
+      </Grid>
     </div>
   );
 };

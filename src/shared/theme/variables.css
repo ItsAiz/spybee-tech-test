@@ -1,4 +1,6 @@
 :root {
+  --layout-header-height: 64px;
+
   /* Colors */
 
   --base-white: #ffffff;
@@ -55,7 +57,7 @@
 
   --color-bg: var(--base-white);
   --color-surface: var(--neutral-50);
-  --color-border: var(--neutral-200);
+  --color-border: var(--secondary-200);
 
   --color-text: var(--base-black);
   --color-text-muted: var(--neutral-500);
