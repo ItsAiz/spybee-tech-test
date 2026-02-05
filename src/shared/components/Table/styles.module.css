@@ -52,6 +52,15 @@
   background-color: var(--secondary-50);
 }
 
+.clickable-row {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.clickable-row:hover {
+  background-color: var(--neutral-300);
+}
+
 .row:last-child {
   border-bottom: none;
 }

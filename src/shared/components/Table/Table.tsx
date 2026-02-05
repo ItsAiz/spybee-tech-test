@@ -4,7 +4,7 @@ import { TableProps } from '@/shared/data/models/Table.interface';
 import styles from './styles.module.css';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-export const Table = ({ columns, data, pagination }: TableProps) => {
+export const Table = ({ columns, data, pagination, onRowClick }: TableProps) => {
   const hasPagination = !!pagination;
   const from = hasPagination ? pagination.page * pagination.rowsPerPage + 1 : 0;
   const to = hasPagination
@@ -41,7 +41,12 @@ export const Table = ({ columns, data, pagination }: TableProps) => {
             {data.map((row, rowIndex) => (
               <tr
                 key={rowIndex}
-                className={clsx(styles.row, row._highlightColor && styles.highlighted)}
+                className={clsx(
+                  styles.row, 
+                  row._highlightColor && styles.highlighted,
+                  onRowClick && styles['clickable-row']
+                )}
+                onClick={() => onRowClick?.(row)}
               >
                 {columns.map((col) => (
                   <td

@@ -25,6 +25,7 @@ import {
 import mockProjects from '@/modules/projects/data/mocks/mock_data.json';
 import styles from './styles.module.css';
 import { MapView } from '../../components/MapView';
+import { TableCellValue } from '@/shared/data/models/Table.interface';
 
 const StatItem = ({ count, label }: { count: number; label: string }) => (
   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
@@ -42,6 +43,7 @@ const ProjectsPage = () => {
   const [inputValue, setInputValue] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [showMap, setShowMap] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const getCount = (project: Project, type: string) => {
     return project.incidents.filter((i) => i.item === type).length;
@@ -90,6 +92,7 @@ const ProjectsPage = () => {
       const planColors = PROJECT_PLAN_COLORS[planKey] || { bg: 'neutral-100', text: 'default' };
   
       return ({
+        id: project._id,
         _highlightColor: project.status === 'active',
         projectInfo: (
           <div className={styles['project-info-container']}>
@@ -143,6 +146,22 @@ const ProjectsPage = () => {
       });
     });
   }, [currentProjectsData]);
+
+  const handleRowClick = (row: Record<string, TableCellValue>) => {
+    const project = currentProjectsData.find((p) => p._id === row.id);
+    if (!project) return;
+    if (selectedProject?._id === project._id && showMap) {
+      setShowMap(false);
+      setSelectedProject(null);
+    } else {
+      setSelectedProject(project);
+      setShowMap(true);
+    }
+  };
+
+  const projectsForMap = useMemo(() => {
+    return selectedProject ? [selectedProject] : currentProjectsData;
+  }, [selectedProject, currentProjectsData]);
 
   const fetchData = async () => {
     try {
@@ -216,7 +235,14 @@ const ProjectsPage = () => {
       </button>
       <button 
         className={'square-button'}
-        onClick={() => setShowMap(!showMap)}
+        onClick={() => {
+          if (showMap) {
+            setShowMap(false);
+            setSelectedProject(null);
+          } else {
+            setShowMap(true);
+          }
+        }}
         style={{ backgroundColor: showMap ? 'var(--neutral-200)' : '' }}
       >
         <MapPin size={16} color={'var(--secondary-500)'} />
@@ -261,25 +287,28 @@ const ProjectsPage = () => {
       <GridItem span={12}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
           {showMap && (
-            <div style={{ 
-              height: '250px',
-              width: '100%',
-              borderRadius: 'var(--radius-md)', 
-              overflow: 'hidden',
-              border: '1px solid var(--secondary-200)',
-              animation: 'fadeIn 0.3s ease' 
-            }}>
-              <MapView projects={currentProjectsData} />
+            <div
+              style={{
+                height: '250px',
+                width: '100%',
+                borderRadius: 'var(--radius-md)',
+                overflow: 'hidden',
+                border: '1px solid var(--secondary-200)',
+                animation: 'fadeIn 0.3s ease'
+              }}
+            >
+              <MapView projects={projectsForMap} />
             </div>
           )}
-          <div style={{ 
+          <div style={{
             height: showMap ? '380px' : '648px',
             transition: 'all 0.3s ease',
             overflow: 'auto'
           }}>
-            <Table 
-              columns={PROJECT_LIST_COLUMNS} 
-              data={allTableData} 
+            <Table
+              columns={PROJECT_LIST_COLUMNS}
+              data={allTableData}
+              onRowClick={handleRowClick}
               pagination={{
                 totalCount: projects.length,
                 page: currentPage,

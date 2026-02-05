@@ -18,4 +18,5 @@ export interface TableProps {
   columns: TableColumn[];
   data: Array<Record<string, TableCellValue> & { _highlightColor?: boolean }>;
   pagination?: TablePaginationProps;
+  onRowClick?: (row: Record<string, TableCellValue>) => void;
 }
