@@ -8,7 +8,7 @@
   justify-content: space-between;
   align-items: center;
   padding: var(--space-6);
-  height: 64px;
+  height: var(--layout-header-height);
   width: 100%;
   background-color: var(--secondary-600);
   box-shadow: var(--shadow-xs);

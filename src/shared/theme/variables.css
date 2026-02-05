@@ -1,4 +1,6 @@
 :root {
+  --layout-header-height: 64px;
+
   /* Colors */
 
   --base-white: #ffffff;
@@ -38,9 +40,10 @@
 
   --tertiary-400: #0082fa;
 
-  --accent-400: #067c29;
+  --accent-400: #DCF5EF;
+  --accent-500: #067c29;
   --warning-400: #cf4920;
-  --error-400: #e21f2a;
+  --error-400: #FFACA5;
 
   /* Shadows */
 
@@ -55,7 +58,7 @@
 
   --color-bg: var(--base-white);
   --color-surface: var(--neutral-50);
-  --color-border: var(--neutral-200);
+  --color-border: var(--secondary-200);
 
   --color-text: var(--base-black);
   --color-text-muted: var(--neutral-500);
@@ -91,10 +94,12 @@
   --font-primary: var(--font-sans);
   --font-mono: var(--font-mono);
 
+  --text-xs: 12px;
   --text-sm: 14px;
   --text-md: 16px;
   --text-lg: 20px;
   --text-xl: 24px;
+  --text-display: 32px;
 
   --fw-regular: 400;
   --fw-medium: 500;
