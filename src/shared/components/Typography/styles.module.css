@@ -4,6 +4,7 @@
   margin: 0;
 }
 
+.variant-xs { font-size: var(--text-xs); }
 .variant-sm { font-size: var(--text-sm); }
 .variant-md { font-size: var(--text-md); }
 .variant-lg { font-size: var(--text-lg); }
@@ -20,7 +21,7 @@
 .align-right { text-align: right; }
 
 .color-default { color: var(--color-text); }
-.color-muted { color: var(--color-text-muted); }
+.color-muted { color: var(--neutral-500); }
 .color-primary { color: var(--color-primary); }
 .color-success { color: var(--color-success); }
 .color-error { color: var(--color-error); }

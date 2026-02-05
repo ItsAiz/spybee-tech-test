@@ -1,7 +1,6 @@
-import React from 'react';
-import styles from './styles.module.css';
 import { InputProps } from '@/shared/data/models/Input.interface';
-import { Typography } from '../Typography/Typography';
+import { Typography } from '@/shared/components/Typography/Typography';
+import styles from './styles.module.css';
 
 export const Input = ({
   labelText,

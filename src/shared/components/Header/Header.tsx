@@ -1,9 +1,9 @@
 'use client';
 
 import Image from 'next/image';
-import styles from './styles.module.css';
-import spybeeLogo from '@/shared/assets/spybee_logo_black.webp';
 import { useRouter } from 'next/navigation';
+import spybeeLogo from '@/shared/assets/spybee_logo_black.webp';
+import styles from './styles.module.css';
 
 export const Header = () => {
   const router = useRouter();

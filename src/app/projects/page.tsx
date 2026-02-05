@@ -1,4 +1,4 @@
-import ProjectsPage from '@/modules/projects/presentation/pages/ProjectsPage';
+import ProjectsPage from '@/modules/projects/presentation/pages/dashboard/ProjectsPage';
 
 const Projects = () => {
   return <ProjectsPage />;

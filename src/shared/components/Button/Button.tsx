@@ -1,7 +1,6 @@
-import React from 'react';
-import styles from './styles.module.css';
-import { ButtonProps } from '@/shared/data/models/Button.interface';
 import clsx from 'clsx';
+import { ButtonProps } from '@/shared/data/models/Button.interface';
+import styles from './styles.module.css';
 
 export const Button = ({
   text,

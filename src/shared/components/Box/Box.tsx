@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from './styles.module.css';
 import { BoxProps } from '@/shared/data/models/Box.interface';
+import styles from './styles.module.css';
 
 const getSpacingValue = (val?: number | string) => {
   if (val === undefined) return undefined;

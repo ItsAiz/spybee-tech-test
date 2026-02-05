@@ -1,6 +1,6 @@
 import { JSX } from 'react';
 
-export type TypographyVariant = 'sm' | 'md' | 'lg' | 'xl' | 'display';
+export type TypographyVariant = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'display';
 export type TypographyWeight = 'regular' | 'medium' | 'semibold' | 'bold';
 export type TypographyAlign = 'left' | 'center' | 'right';
 export type TextColor =
