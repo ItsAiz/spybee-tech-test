@@ -68,7 +68,7 @@ export const Table = ({ columns, data, pagination }: TableProps) => {
           </Typography>
           <div className={styles.paginationActions}>
             <button
-              className={styles.pageButton}
+              className={'square-button'}
               onClick={() => pagination.onPageChange(pagination.page - 1)}
               disabled={pagination.page === 0}
               aria-label={'Página anterior'}
@@ -81,7 +81,7 @@ export const Table = ({ columns, data, pagination }: TableProps) => {
               </Typography>
             </div>
             <button
-              className={styles.pageButton}
+              className={'square-button'}
               onClick={() => pagination.onPageChange(pagination.page + 1)}
               disabled={to >= pagination.totalCount}
               aria-label={'Página siguiente'}

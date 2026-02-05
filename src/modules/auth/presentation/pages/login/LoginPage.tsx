@@ -16,27 +16,27 @@ const LoginPage = () => {
       <Grid withSidebar>
         <GridItem span={12}>
           <Input
-            labelText={'Email'}
-            placeholder={'Enter your email'}
+            labelText={'Correo electrónico'}
+            placeholder={'Ingresa tu correo'}
             isFullWidth
           />
          </GridItem>
         <GridItem span={12}>
           <Input
-            labelText={'Password'}
-            placeholder={'Enter your password'}
+            labelText={'Contraseña'}
+            placeholder={'Ingresa tu contraseña'}
             isFullWidth
           />
           <Spacing spy={24} />
         </GridItem>
         <GridItem span={12}>
-          <Button text={'Login'} onClick={() => navigate('/projects')} isFullWidth />
+          <Button text={'Iniciar sesión'} onClick={() => navigate('/projects')} isFullWidth />
         </GridItem>
         <GridItem span={12}>
           <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
             <Button
               variant={'btn-text'}
-              text={'Create your account'}
+              text={'Crea tu propia cuenta'}
               onClick={() => navigate('/register')}
             />
           </div>

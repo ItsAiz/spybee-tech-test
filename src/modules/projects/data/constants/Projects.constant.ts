@@ -1,6 +1,6 @@
 import { TableColumn } from '@/shared/data/models/Table.interface';
 import { TextColor } from '@/shared/data/models/Typography.interface';
-import { ProjectPlanData } from '../models/Projects.interface';
+import { ProjectPlanData, SortByProject } from '@/modules/projects/data/models/Projects.interface';
 
 export const ROWS_PER_PAGE = 10;
 
@@ -58,3 +58,10 @@ export const PROJECT_PLAN_COLORS: Record<ProjectPlanData['plan'], { bg: string; 
     text: 'default',
   }
 };
+
+export const SORT_PROJECTS_OPTIONS = [
+  { label: 'Orden Alfabético', value: 'title' as SortByProject },
+  { label: 'Número de Incidencias', value: 'incidents' as SortByProject },
+  { label: 'Número de RFI', value: 'RFI' as SortByProject },
+  { label: 'Número de Tareas', value: 'task' as SortByProject },
+];

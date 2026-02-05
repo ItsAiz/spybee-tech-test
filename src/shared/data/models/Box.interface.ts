@@ -20,4 +20,5 @@ export interface BoxProps {
   height?: number | string;
   children?: React.ReactNode;
   className?: string;
+  flexDirection?: 'row' | 'column';
 }

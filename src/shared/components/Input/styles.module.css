@@ -31,6 +31,7 @@
   font-size: var(--text-sm);
   color: var(--color-text);
   font-family: var(--font-primary);
+  height: 100%;
 }
 
 .input-element::placeholder {
@@ -86,7 +87,7 @@
 .helper-error { color: var(--color-error); }
 
 .input-icon {
-  margin-left: var(--space-2);
   display: flex;
   align-items: center;
+  margin-left: -8px;
 }

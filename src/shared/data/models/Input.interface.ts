@@ -6,4 +6,5 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   variant?: Variant;
   endIcon?: React.ReactNode;
   isFullWidth?: boolean;
+  onEndIconClick?: () => void;
 }

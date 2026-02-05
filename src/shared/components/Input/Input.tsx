@@ -9,6 +9,7 @@ export const Input = ({
   disabled,
   endIcon,
   isFullWidth = false,
+  onEndIconClick,
   ...props
 }: InputProps) => {
   const fieldClass = [
@@ -37,7 +38,14 @@ export const Input = ({
       {labelText && <Typography variant={'sm'}>{labelText}</Typography>}
       <div className={fieldClass}>
         <input className={styles['input-element']} disabled={disabled} {...props} />
-        {endIcon && <div className={styles['input-icon']}>{endIcon}</div>}
+        {endIcon && 
+          <div
+            className={styles['input-icon']}
+            onClick={onEndIconClick}
+            style={{ cursor: onEndIconClick ? 'pointer' : 'default' }}>
+            {endIcon}
+          </div>
+        }
       </div>
       {helperText && (
         <div className={`${styles['input-helper']} ${helperClass}`}>

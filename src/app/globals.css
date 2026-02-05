@@ -88,3 +88,26 @@ a {
     padding: var(--space-10) 400px;
   }
 }
+
+.square-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: var(--secondary-50);
+  border: 1px solid var(--secondary-200);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.square-button:hover:not(:disabled) {
+  background-color: var(--secondary-100);
+  border-color: var(--secondary-300);
+}
+
+.square-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}

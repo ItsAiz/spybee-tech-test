@@ -2,7 +2,6 @@
   background-color: var(--base-white);
   border-radius: var(--radius-md);
   display: flex;
-  flex-direction: column;
   box-sizing: border-box;
 
   padding: var(--box-padding, 0);

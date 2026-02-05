@@ -1,6 +1,8 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
+import { ArrowDownWideNarrow, LayoutGrid, List, MapPin, Plus, Search } from 'lucide-react';
 import { Button } from '@/shared/components/Button/Button';
 import { Grid } from '@/shared/components/Grid/Grid';
 import { GridItem } from '@/shared/components/Grid/GridItem';
@@ -10,26 +12,73 @@ import { Table } from '@/shared/components/Table/Table';
 import { ProjectUsers } from '@/modules/projects/presentation/components/ProjectUsers/ProjectUsers';
 import { Chip } from '@/shared/components/Chip/Chip';
 import { useProjectStore } from '@/modules/projects/data/store/useProjectStore';
-import { Project } from '@/modules/projects/data/models/Projects.interface';
+import { Project, SortByProject } from '@/modules/projects/data/models/Projects.interface';
 import {
   PROJECT_LIST_COLUMNS,
   PROJECT_PLAN_COLORS,
   PROJECT_PLAN_LABELS,
   PROJECT_STATUS_COLORS,
   PROJECT_STATUS_LABELS,
-  ROWS_PER_PAGE
+  ROWS_PER_PAGE,
+  SORT_PROJECTS_OPTIONS
 } from '@/modules/projects/data/constants/Projects.constant';
 import mockProjects from '@/modules/projects/data/mocks/mock_data.json';
+import styles from './styles.module.css';
+
+const StatItem = ({ count, label }: { count: number; label: string }) => (
+  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+    <Typography weight={'bold'} variant={'sm'}>{count}</Typography>
+    <Typography variant={'xs'} color={'muted'}>{label}</Typography>
+  </div>
+);
 
 const ProjectsPage = () => {
   const { projects, setProjects } = useProjectStore();
   const [currentPage, setCurrentPage] = useState(0);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [sortBy, setSortBy] = useState<SortByProject>('title');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [inputValue, setInputValue] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const getCount = (project: Project, type: string) => {
+    return project.incidents.filter((i) => i.item === type).length;
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
+  const toggleSortOrder = () => {
+    setSortOrder((prev) => (prev === 'desc' ? 'asc' : 'desc'));
+    setCurrentPage(0);
+  };
+
+  const handleSearchChange = () => {
+    setSearchTerm(inputValue);
+    setCurrentPage(0);
+  };
 
   const allTableData = useMemo(() => {
-    return projects.map((project) => {
-      const countIncidents = project.incidents.filter(i => i.item === 'incidents').length;
-      const countRFI = project.incidents.filter(i => i.item === 'RFI').length;
-      const countTasks = project.incidents.length - (countIncidents + countRFI);
+    const filteredProjects = projects.filter((project) =>
+      project.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    const sortedProjects = [...filteredProjects].sort((a, b) => {
+      let comparison = 0;
+      if (sortBy === 'title') {
+        comparison = a.title.localeCompare(b.title, undefined, { numeric: true, sensitivity: 'base' });
+      } else {
+        const countA = getCount(a, sortBy);
+        const countB = getCount(b, sortBy);
+        comparison = countA - countB;
+      }
+      return sortOrder === 'asc' ? comparison : -comparison;
+    });
+
+    return sortedProjects.map((project) => {
+      const countIncidents = project.incidents.filter((i) => i.item === 'incidents').length;
+      const countRFI = project.incidents.filter((i) => i.item === 'RFI').length;
+      const countTasks = project.incidents.filter((i) => i.item === 'task').length;
       const statusLabel = PROJECT_STATUS_LABELS[project.status] || project.status;
       const statusColors = PROJECT_STATUS_COLORS[project.status] || { bg: 'neutral-100', text: 'neutral-400' };
       const planKey = project.projectPlanData.plan.toLowerCase();
@@ -39,9 +88,22 @@ const ProjectsPage = () => {
       return ({
         _highlightColor: project.status === 'active',
         projectInfo: (
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <Typography weight={'bold'}>{project.title}</Typography>
-            <Typography variant={'xs'} color={'muted'}>{project.createdAt}</Typography>
+          <div className={styles['project-info-container']}>
+            <div className={styles['image-rapper']}>
+              {project?.img && project.img !== 'xxx' && !project.img.includes('firebasestorage') && (
+                <Image 
+                  src={project.img} 
+                  alt={`Logo de ${project.title}`}
+                  fill
+                  sizes={'40px'}
+                  style={{ objectFit: 'cover' }}
+                />
+              )}
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <Typography weight={'bold'}>{project.title}</Typography>
+              <Typography variant={'xs'} color={'muted'}>{project.createdAt}</Typography>
+            </div>
           </div>
         ),
         plan: (
@@ -69,32 +131,19 @@ const ProjectsPage = () => {
         ),
         itemsToBeat: (
           <div style={{ display: 'flex', gap: 'var(--space-8)', justifyContent: 'center' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-              <Typography weight={'bold'} variant={'sm'}>{countIncidents}</Typography>
-              <Typography variant={'xs'} color={'muted'}>Incidencias</Typography>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-              <Typography weight={'bold'} variant={'sm'}>{countRFI}</Typography>
-              <Typography variant={'xs'} color={'muted'}>RFI</Typography>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-              <Typography weight={'bold'} variant={'sm'}>{countTasks}</Typography>
-              <Typography variant={'xs'} color={'muted'}>Tareas</Typography>
-            </div>
+            <StatItem count={countIncidents} label={'Incidencias'} />
+            <StatItem count={countRFI} label={'RFI'} />
+            <StatItem count={countTasks} label={'Tareas'} />
           </div>
         ),
       });
     });
-  }, [projects]);
+  }, [projects, sortOrder, sortBy, searchTerm]);
 
   const paginatedData = useMemo(() => {
     const start = currentPage * ROWS_PER_PAGE;
     return allTableData.slice(start, start + ROWS_PER_PAGE);
   }, [allTableData, currentPage]);
-
-  const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-  };
 
   const fetchData = async () => {
     try {
@@ -112,6 +161,62 @@ const ProjectsPage = () => {
     // eslint-disable-next-line
   }, []);
 
+  const renderFilterButtons = () => (
+    <div className={styles['action-filters-container']}>
+      <button 
+        className={'square-button'}
+        onClick={toggleSortOrder}
+        style={{ marginRight: 'var(--space-2)' }}
+      >
+        <div style={{ transform: sortOrder === 'asc' ? 'rotate(180deg)' : 'none', transition: '0.2s' }}>
+          <ArrowDownWideNarrow size={16} color={'var(--secondary-500)'} />
+        </div>
+      </button>
+      <div style={{ position: 'relative' }}>
+        <button 
+          className={'square-button'} 
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          style={{ backgroundColor: isMenuOpen ? 'var(--neutral-200)' : 'transparent' }}
+        >
+          <List size={16} color={'var(--secondary-500)'} />
+        </button>
+        {isMenuOpen && (
+          <>
+            <div 
+              onClick={() => setIsMenuOpen(false)} 
+              style={{ position: 'fixed', inset: 0, zIndex: 10 }} 
+            />
+            <div className={styles['dropdown-menu']}>
+              {SORT_PROJECTS_OPTIONS.map((opt) => (
+                <div
+                  key={opt.value}
+                  onClick={() => {
+                    setSortBy(opt.value);
+                    setIsMenuOpen(false);
+                    setCurrentPage(0);
+                  }}
+                  style={{
+                    padding: '8px 12px',
+                    cursor: 'pointer',
+                    backgroundColor: sortBy === opt.value ? 'var(--primary-100)' : 'transparent',
+                    borderRadius: 'var(--radius-sm)',
+                    transition: '0.2s'
+                  }}
+                >
+                  <Typography variant={'xs'} weight={sortBy === opt.value ? 'bold' : 'regular'}>
+                    {opt.label}
+                  </Typography>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+      <button className={'square-button'}><LayoutGrid size={16} color={'var(--secondary-500)'} /></button>
+      <button className={'square-button'}><MapPin size={16} color={'var(--secondary-500)'} /></button>
+    </div>
+  );
+
   return (
     <Grid withSidebar>
       <GridItem portrait={12} landscape={6} desktop={6}>
@@ -125,17 +230,21 @@ const ProjectsPage = () => {
       <GridItem portrait={12} landscape={6} desktop={6}>
         <Grid isSubGrid>
           <GridItem portrait={12} landscape={4} desktop={4}>
-            <Typography>Filters</Typography>
+            {renderFilterButtons()}
           </GridItem>
           <GridItem portrait={12} landscape={4} desktop={4}>
             <Input
               placeholder={'Buscar'}
+              endIcon={<Search size={16} color={'var(--neutral-400)'} />}
+              onChange={(e) => setInputValue(e.target.value)}
+              onEndIconClick={handleSearchChange}
               isFullWidth
             />
           </GridItem>
           <GridItem portrait={12} landscape={4} desktop={4}>
             <Button 
               text={'Crear proyecto'}
+              leftIcon={<Plus size={16} />}
               onClick={() => alert('crear')}
               isFullWidth
             />

@@ -16,35 +16,35 @@ const RegisterPage = () => {
       <Grid withSidebar>
         <GridItem span={6}>
           <Input
-            labelText={'Full Name'}
-            placeholder={'Enter your full name'}
+            labelText={'Nombre completo'}
+            placeholder={'Ingresa tu nombre completo'}
             isFullWidth
           />
         </GridItem>
          <GridItem span={6}>
           <Input
-            labelText={'Email'}
-            placeholder={'Enter your email'}
+            labelText={'Correo electrónico'}
+            placeholder={'Ingresa tu correo'}
             isFullWidth
           />
         </GridItem>
         <GridItem span={12}>
           <Input
-            labelText={'Password'}
-            placeholder={'Enter your password'}
+            labelText={'Contraseña'}
+            placeholder={'Ingresa tu contraseña'}
             isFullWidth
           />
         </GridItem>
         <GridItem span={12}>
           <Input
-            labelText={'Confirm Password'}
-            placeholder={'Confirm your password'}
+            labelText={'Confirmar contraseña'}
+            placeholder={'Confirma tu contraseña'}
             isFullWidth
           />
           <Spacing spy={24} />
         </GridItem>
         <GridItem span={12}>
-          <Button text={'Register'} onClick={() => navigate('/')} isFullWidth />
+          <Button text={'Registrarse'} onClick={() => navigate('/')} isFullWidth />
         </GridItem>
       </Grid>
     </div>

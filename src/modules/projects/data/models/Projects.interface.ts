@@ -61,3 +61,5 @@ export interface Project {
   createdAt: string;
   incidents: Incident[];
 }
+
+export type SortByProject = 'title' | 'incidents' | 'RFI' | 'task';
