@@ -24,6 +24,7 @@ import {
 } from '@/modules/projects/data/constants/Projects.constant';
 import mockProjects from '@/modules/projects/data/mocks/mock_data.json';
 import styles from './styles.module.css';
+import { MapView } from '../../components/MapView';
 
 const StatItem = ({ count, label }: { count: number; label: string }) => (
   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
@@ -40,6 +41,7 @@ const ProjectsPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [showMap, setShowMap] = useState(false);
 
   const getCount = (project: Project, type: string) => {
     return project.incidents.filter((i) => i.item === type).length;
@@ -59,23 +61,25 @@ const ProjectsPage = () => {
     setCurrentPage(0);
   };
 
-  const allTableData = useMemo(() => {
-    const filteredProjects = projects.filter((project) =>
-      project.title.toLowerCase().includes(searchTerm.toLowerCase())
+  const currentProjectsData = useMemo(() => {
+    const filtered = projects.filter((p) =>
+      p.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    const sortedProjects = [...filteredProjects].sort((a, b) => {
+    const sorted = [...filtered].sort((a, b) => {
       let comparison = 0;
       if (sortBy === 'title') {
-        comparison = a.title.localeCompare(b.title, undefined, { numeric: true, sensitivity: 'base' });
+        comparison = a.title.localeCompare(b.title, undefined, { numeric: true });
       } else {
-        const countA = getCount(a, sortBy);
-        const countB = getCount(b, sortBy);
-        comparison = countA - countB;
+        comparison = getCount(a, sortBy) - getCount(b, sortBy);
       }
       return sortOrder === 'asc' ? comparison : -comparison;
     });
+    const start = currentPage * ROWS_PER_PAGE;
+    return sorted.slice(start, start + ROWS_PER_PAGE);
+  }, [projects, searchTerm, sortBy, sortOrder, currentPage]);
 
-    return sortedProjects.map((project) => {
+  const allTableData = useMemo(() => {
+    return currentProjectsData.map((project) => {
       const countIncidents = project.incidents.filter((i) => i.item === 'incidents').length;
       const countRFI = project.incidents.filter((i) => i.item === 'RFI').length;
       const countTasks = project.incidents.filter((i) => i.item === 'task').length;
@@ -138,12 +142,7 @@ const ProjectsPage = () => {
         ),
       });
     });
-  }, [projects, sortOrder, sortBy, searchTerm]);
-
-  const paginatedData = useMemo(() => {
-    const start = currentPage * ROWS_PER_PAGE;
-    return allTableData.slice(start, start + ROWS_PER_PAGE);
-  }, [allTableData, currentPage]);
+  }, [currentProjectsData]);
 
   const fetchData = async () => {
     try {
@@ -212,8 +211,16 @@ const ProjectsPage = () => {
           </>
         )}
       </div>
-      <button className={'square-button'}><LayoutGrid size={16} color={'var(--secondary-500)'} /></button>
-      <button className={'square-button'}><MapPin size={16} color={'var(--secondary-500)'} /></button>
+      <button className={'square-button'}>
+        <LayoutGrid size={16} color={'var(--secondary-500)'} />
+      </button>
+      <button 
+        className={'square-button'}
+        onClick={() => setShowMap(!showMap)}
+        style={{ backgroundColor: showMap ? 'var(--neutral-200)' : '' }}
+      >
+        <MapPin size={16} color={'var(--secondary-500)'} />
+      </button>
     </div>
   );
 
@@ -252,17 +259,35 @@ const ProjectsPage = () => {
         </Grid>
       </GridItem>
       <GridItem span={12}>
-        <div style={{ height: 648 }}>
-          <Table 
-            columns={PROJECT_LIST_COLUMNS} 
-            data={paginatedData} 
-            pagination={{
-              totalCount: allTableData.length,
-              page: currentPage,
-              rowsPerPage: ROWS_PER_PAGE,
-              onPageChange: handlePageChange
-            }}
-          />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+          {showMap && (
+            <div style={{ 
+              height: '250px',
+              width: '100%',
+              borderRadius: 'var(--radius-md)', 
+              overflow: 'hidden',
+              border: '1px solid var(--secondary-200)',
+              animation: 'fadeIn 0.3s ease' 
+            }}>
+              <MapView projects={currentProjectsData} />
+            </div>
+          )}
+          <div style={{ 
+            height: showMap ? '380px' : '648px',
+            transition: 'all 0.3s ease',
+            overflow: 'auto'
+          }}>
+            <Table 
+              columns={PROJECT_LIST_COLUMNS} 
+              data={allTableData} 
+              pagination={{
+                totalCount: projects.length,
+                page: currentPage,
+                rowsPerPage: ROWS_PER_PAGE,
+                onPageChange: handlePageChange
+              }}
+            />
+          </div>
         </div>
       </GridItem>
     </Grid>
