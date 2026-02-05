@@ -1,0 +1,15 @@
+.box {
+  background-color: var(--base-white);
+  border-radius: var(--radius-md);
+  display: flex;
+  box-sizing: border-box;
+
+  padding: var(--box-padding, 0);
+  margin: var(--box-margin, 0);
+  width: var(--box-width, auto);
+  height: var(--box-height, auto);
+  
+  border-style: var(--box-border-style, none);
+  border-width: 1px;
+  border-color: var(--box-border-color, transparent);
+}

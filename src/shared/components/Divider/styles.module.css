@@ -1,0 +1,24 @@
+.divider {
+  display: block;
+  box-sizing: border-box;
+  --divider-color: var(--secondary-200);
+  border: 0;
+}
+
+.horizontal {
+  width: var(--divider-size, 100%);
+  height: 0;
+  border-top-width: 1px;
+  border-top-style: var(--divider-style, solid);
+  border-top-color: var(--divider-color);
+}
+
+.vertical {
+  width: 0;
+  height: var(--divider-size, 12px);
+  border-left-width: 1px;
+  border-left-style: var(--divider-style, solid);
+  border-left-color: var(--divider-color);
+  align-self: center;
+  display: inline-block;
+}
