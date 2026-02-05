@@ -1,11 +1,11 @@
 export type BoxBorderType = 'solid' | 'dashed' | 'none';
 
 export type BoxColorMapping = 
-  | 'primary-400' 
-  | 'secondary-200' 
-  | 'neutral-300' 
-  | 'success' 
-  | 'error' 
+  | 'primary-400'
+  | 'secondary-200'
+  | 'neutral-300'
+  | 'success'
+  | 'error'
   | 'warning'
   | 'base-white'
   | 'base-black'
@@ -14,6 +14,7 @@ export type BoxColorMapping =
 export interface BoxProps {
   borderType?: BoxBorderType;
   borderColor?: BoxColorMapping;
+  backgroundColor?: BoxColorMapping;
   padding?: number | string;
   margin?: number | string;
   width?: number | string;

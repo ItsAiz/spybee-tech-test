@@ -19,6 +19,7 @@ export const Box = ({
   children,
   borderType = 'none',
   flexDirection = 'column',
+  backgroundColor = '--secondary-50',
   borderColor,
   width,
   height,
@@ -31,6 +32,7 @@ export const Box = ({
     '--box-height': typeof height === 'number' ? `${height}px` : height,
     '--box-border-style': borderType,
     '--box-border-color': getColorVariable(borderColor),
+    backgroundColor: getColorVariable(backgroundColor),
     flexDirection
   } as React.CSSProperties;
 

@@ -27,3 +27,4 @@
 .color-error { color: var(--color-error); }
 .color-yellow { color: var(--primary-500); }
 .color-white { color: var(--neutral-50); }
+.color-info { color: var(--tertiary-400); }

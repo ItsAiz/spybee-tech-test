@@ -2,15 +2,19 @@
 
 import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowDownWideNarrow, LayoutGrid, List, MapPin, Plus, Search } from 'lucide-react';
+import { ArrowDownWideNarrow, LayoutGrid, List, MapPin, Plus, Search, ChevronLeft } from 'lucide-react';
 import { Button } from '@/shared/components/Button/Button';
 import { Grid } from '@/shared/components/Grid/Grid';
+import { Box } from '@/shared/components/Box/Box';
 import { GridItem } from '@/shared/components/Grid/GridItem';
 import { Input } from '@/shared/components/Input/Input';
 import { Typography } from '@/shared/components/Typography/Typography';
 import { Table } from '@/shared/components/Table/Table';
 import { ProjectUsers } from '@/modules/projects/presentation/components/ProjectUsers/ProjectUsers';
 import { Chip } from '@/shared/components/Chip/Chip';
+import { MapView } from '@/modules/projects/presentation/components/MapView';
+import { ResumeView } from '@/modules/projects/presentation/components/ResumeView';
+import { TableCellValue } from '@/shared/data/models/Table.interface';
 import { useProjectStore } from '@/modules/projects/data/store/useProjectStore';
 import { Project, SortByProject } from '@/modules/projects/data/models/Projects.interface';
 import {
@@ -24,8 +28,6 @@ import {
 } from '@/modules/projects/data/constants/Projects.constant';
 import mockProjects from '@/modules/projects/data/mocks/mock_data.json';
 import styles from './styles.module.css';
-import { MapView } from '../../components/MapView';
-import { TableCellValue } from '@/shared/data/models/Table.interface';
 
 const StatItem = ({ count, label }: { count: number; label: string }) => (
   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
@@ -37,13 +39,14 @@ const StatItem = ({ count, label }: { count: number; label: string }) => (
 const ProjectsPage = () => {
   const { projects, setProjects } = useProjectStore();
   const [currentPage, setCurrentPage] = useState(0);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [sortBy, setSortBy] = useState<SortByProject>('title');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [showMap, setShowMap] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [showResume, setShowResume] = useState(false);
 
   const getCount = (project: Project, type: string) => {
     return project.incidents.filter((i) => i.item === type).length;
@@ -285,39 +288,80 @@ const ProjectsPage = () => {
         </Grid>
       </GridItem>
       <GridItem span={12}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-          {showMap && (
-            <div
-              style={{
-                height: '250px',
-                width: '100%',
-                borderRadius: 'var(--radius-md)',
-                overflow: 'hidden',
-                border: '1px solid var(--secondary-200)',
-                animation: 'fadeIn 0.3s ease'
+        <div style={{ position: 'relative' }}>
+          <button
+            className={'square-button'}
+            onClick={() => setShowResume(!showResume)}
+            style={{
+              position: 'absolute',
+              right: '-16px',
+              top: showMap ? '266px' : '16px',
+              zIndex: 20,
+              backgroundColor: 'var(--base-white)',
+              boxShadow: 'var(--shadow-md)',
+              transition: 'all 0.3s ease',
+              borderRadius: 'var(--radius-pill) !important'
+            }}
+          >
+            <div 
+              style={{ 
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'transform 0.3s ease',
+                transform: showResume ? 'rotate(180deg)' : 'rotate(0deg)' 
               }}
             >
-              <MapView projects={projectsForMap} />
+              <ChevronLeft size={16} color={'var(--secondary-500)'} />
             </div>
-          )}
-          <div style={{
-            height: showMap ? '380px' : '648px',
-            transition: 'all 0.3s ease',
-            overflow: 'auto'
-          }}>
-            <Table
-              columns={PROJECT_LIST_COLUMNS}
-              data={allTableData}
-              onRowClick={handleRowClick}
-              pagination={{
-                totalCount: projects.length,
-                page: currentPage,
-                rowsPerPage: ROWS_PER_PAGE,
-                onPageChange: handlePageChange
-              }}
-            />
-          </div>
+          </button>
         </div>
+        <Grid isSubGrid>
+          <GridItem portrait={12} landscape={showResume ? 8 : 12} desktop={showResume ? 8 : 12}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+              {showMap && (
+                <div
+                  style={{
+                    height: '250px',
+                    width: '100%',
+                    borderRadius: 'var(--radius-md)',
+                    overflow: 'hidden',
+                    border: '1px solid var(--secondary-200)',
+                    animation: 'fadeIn 0.3s ease'
+                  }}
+                >
+                  <MapView projects={projectsForMap} />
+                </div>
+              )}
+              <div style={{
+                height: showMap ? '380px' : '648px',
+                transition: 'all 0.3s ease',
+                overflow: 'auto'
+              }}>
+                <Table
+                  columns={PROJECT_LIST_COLUMNS}
+                  data={allTableData}
+                  onRowClick={handleRowClick}
+                  pagination={{
+                    totalCount: projects.length,
+                    page: currentPage,
+                    rowsPerPage: ROWS_PER_PAGE,
+                    onPageChange: handlePageChange
+                  }}
+                />
+              </div>
+            </div>
+          </GridItem>
+          {showResume && (
+            <GridItem portrait={12} landscape={4} desktop={4}>
+              <div className={styles['resume-animation-wrapper']}>
+                <Box height={'648px'} padding={'var(--space-4)'}>
+                  <ResumeView />
+                </Box>
+              </div>
+            </GridItem>
+          )}
+        </Grid>
       </GridItem>
     </Grid>
   );

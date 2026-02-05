@@ -10,6 +10,7 @@ export type TextColor =
   | 'success'
   | 'error'
   | 'yellow'
+  | 'info'
   | 'white';
 
 export interface TypographyProps {
