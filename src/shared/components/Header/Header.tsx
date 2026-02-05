@@ -1,8 +1,14 @@
+'use client';
+
 import Image from 'next/image';
 import styles from './styles.module.css';
 import spybeeLogo from '@/shared/assets/spybee_logo_black.webp';
+import { useRouter } from 'next/navigation';
 
 export const Header = () => {
+  const router = useRouter();
+  const navigate = router.push;
+
   return (
     <div className={styles['header-container']}>
       <Image
@@ -10,6 +16,8 @@ export const Header = () => {
         alt={'Spybee Logo'}
         width={80}
         height={40}
+        style={{ cursor: 'pointer' }}
+        onClick={() => navigate('/')}
         priority
       />
       <h4>Auth actions here</h4>

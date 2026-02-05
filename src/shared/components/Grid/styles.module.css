@@ -11,7 +11,7 @@
 }
 
 .subGrid {
-  padding: 0;
+  padding: 0 !important;
 }
 
 @media (min-width: 960px) {

@@ -61,3 +61,30 @@ a {
   overflow-x: hidden;
   width: 100%;
 }
+
+.container-children-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: var(--space-10) var(--space-6);
+}
+
+@media (min-width: 600px) {
+  .container-children-centered {
+    padding: var(--space-10) var(--space-8);
+  }
+}
+
+@media (min-width: 960px) {
+  .container-children-centered {
+    padding: var(--space-10) 130px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container-children-centered {
+    padding: var(--space-10) 400px;
+  }
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './styles.module.css';
 import { InputProps } from '@/shared/data/models/Input.interface';
+import { Typography } from '../Typography/Typography';
 
 export const Input = ({
   labelText,
@@ -34,7 +35,7 @@ export const Input = ({
         isFullWidth && styles['fullwidth']
       ].filter(Boolean).join(' ')}
     >
-      {labelText && <label className={styles['input-label']}>{labelText}</label>}
+      {labelText && <Typography variant={'sm'}>{labelText}</Typography>}
       <div className={fieldClass}>
         <input className={styles['input-element']} disabled={disabled} {...props} />
         {endIcon && <div className={styles['input-icon']}>{endIcon}</div>}

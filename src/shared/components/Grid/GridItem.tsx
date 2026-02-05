@@ -14,8 +14,8 @@ export const GridItem = ({
       style={
         {
           '--col-span': portrait ?? span,
-          '--col-landscape': landscape,
-          '--col-desktop': desktop
+          '--col-landscape': landscape ?? portrait ?? span,
+          '--col-desktop': desktop ?? landscape ?? portrait ?? span
         } as React.CSSProperties
       }
     >

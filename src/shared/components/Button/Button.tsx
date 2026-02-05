@@ -10,12 +10,14 @@ export const Button = ({
   disabled = false,
   isFullWidth = false,
   className,
+  variant = 'btn-primary',
   ...props
 }: ButtonProps) => {
   return (
     <button
       className={clsx(
         styles.button,
+        styles[variant],
         isFullWidth && styles.fullwidth,
         disabled && styles.disabled,
         className

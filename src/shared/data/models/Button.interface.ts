@@ -4,4 +4,5 @@ export interface ButtonProps
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   isFullWidth?: boolean;
+  variant?: 'btn-primary' | 'btn-text';
 }
