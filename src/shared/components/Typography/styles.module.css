@@ -23,5 +23,7 @@
 .color-default { color: var(--color-text); }
 .color-muted { color: var(--neutral-500); }
 .color-primary { color: var(--color-primary); }
-.color-success { color: var(--color-success); }
+.color-success { color: var(--accent-500); }
 .color-error { color: var(--color-error); }
+.color-yellow { color: var(--primary-500); }
+.color-white { color: var(--neutral-50); }

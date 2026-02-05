@@ -8,7 +8,9 @@ export type TextColor =
   | 'muted'
   | 'primary'
   | 'success'
-  | 'error';
+  | 'error'
+  | 'yellow'
+  | 'white';
 
 export interface TypographyProps {
   children: React.ReactNode

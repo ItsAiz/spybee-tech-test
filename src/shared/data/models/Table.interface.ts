@@ -7,7 +7,15 @@ export interface TableColumn {
 
 export type TableCellValue = string | number | React.ReactNode;
 
+export interface TablePaginationProps {
+  totalCount: number;
+  page: number;
+  rowsPerPage: number;
+  onPageChange: (newPage: number) => void;
+}
+
 export interface TableProps {
   columns: TableColumn[];
-  data: Array<Record<string, TableCellValue> & { _highlightColor?: string }>;
+  data: Array<Record<string, TableCellValue> & { _highlightColor?: boolean }>;
+  pagination?: TablePaginationProps;
 }
