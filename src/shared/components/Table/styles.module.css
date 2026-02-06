@@ -58,7 +58,7 @@
 }
 
 .clickable-row:hover {
-  background-color: var(--neutral-300);
+  background-color: var(--neutral-200);
 }
 
 .row:last-child {
@@ -89,4 +89,20 @@
 
 .textMuted {
   color: var(--neutral-500) !important;
+}
+
+.empty-row {
+  padding: var(--space-12) 0;
+  text-align: center;
+  border-bottom: none;
+}
+
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  color: var(--neutral-400);
+  margin-top: 200px;
 }

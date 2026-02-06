@@ -10,7 +10,7 @@ import { GridItem } from '@/shared/components/Grid/GridItem';
 import { Input } from '@/shared/components/Input/Input';
 import { Typography } from '@/shared/components/Typography/Typography';
 import { Table } from '@/shared/components/Table/Table';
-import { ProjectUsers } from '@/modules/projects/presentation/components/ProjectUsers/ProjectUsers';
+import { HexagonInitials } from '@/shared/components/HexagonInitials/HexagonInitials';
 import { Chip } from '@/shared/components/Chip/Chip';
 import { MapView } from '@/modules/projects/presentation/components/MapView';
 import { ResumeView } from '@/modules/projects/presentation/components/ResumeView';
@@ -136,7 +136,7 @@ const ProjectsPage = () => {
         ),
         partners: (
           <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-            <ProjectUsers users={project.users} />
+            <HexagonInitials users={project.users} />
           </div>
         ),
         itemsToBeat: (
@@ -354,7 +354,12 @@ const ProjectsPage = () => {
           </GridItem>
           {showResume && (
             <GridItem portrait={12} landscape={4} desktop={4}>
-              <div className={styles['resume-animation-wrapper']}>
+              <div 
+                className={styles['resume-animation-wrapper']} 
+                style={{ 
+                  display: showResume ? 'block' : 'none'
+                }}
+              >
                 <Box height={'648px'} padding={'var(--space-4)'}>
                   <ResumeView />
                 </Box>
