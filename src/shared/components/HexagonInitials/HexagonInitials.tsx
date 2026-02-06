@@ -3,7 +3,7 @@ import { Typography } from '@/shared/components/Typography/Typography';
 import { buildInitials } from '@modules/projects/domain/utils/Project.utils';
 import styles from './styles.module.css';
 
-export const ProjectUsers = ({ users }: { users: User[] }) => {
+export const HexagonInitials = ({ users }: { users: User[] }) => {
   const primaryColors = [
     'var(--primary-100)',
     'var(--primary-200)',
