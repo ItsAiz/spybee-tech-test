@@ -28,6 +28,14 @@ export const Input = ({
       ? styles['helper-success']
       : styles['helper-default'];
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && onEndIconClick && !disabled) {
+      event.preventDefault();
+      onEndIconClick();
+    }
+    props.onKeyDown?.(event);
+  };
+
   return (
     <div
       className={[
@@ -37,7 +45,7 @@ export const Input = ({
     >
       {labelText && <Typography variant={'sm'}>{labelText}</Typography>}
       <div className={fieldClass}>
-        <input className={styles['input-element']} disabled={disabled} {...props} />
+        <input className={styles['input-element']} onKeyDown={handleKeyDown} disabled={disabled} {...props} />
         {endIcon && 
           <div
             className={styles['input-icon']}

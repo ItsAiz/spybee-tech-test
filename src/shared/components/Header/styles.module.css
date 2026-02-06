@@ -13,3 +13,44 @@
   background-color: var(--secondary-600);
   box-shadow: var(--shadow-xs);
 }
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.logo-image {
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: brightness(1);
+}
+
+.logo-image:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+}
+
+.logo-image:active {
+  transform: scale(0.95);
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-2) var(--space-2);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.user-profile:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
