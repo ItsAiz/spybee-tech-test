@@ -25,13 +25,14 @@
 
 .input-element {
   flex: 1;
-  border: 1px solid var(---secondary-300);
+  border: none; 
   outline: none;
   background: transparent;
   font-size: var(--text-sm);
   color: var(--color-text);
   font-family: var(--font-primary);
   height: 100%;
+  min-width: 0;
 }
 
 .input-element::placeholder {
@@ -89,5 +90,8 @@
 .input-icon {
   display: flex;
   align-items: center;
-  margin-left: -8px;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: var(--space-2);
+  color: var(--secondary-500);
 }
