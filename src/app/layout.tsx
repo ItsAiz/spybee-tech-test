@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Header } from '@/shared/components/Header/Header';
 import './globals.css';
+import { Providers } from '@/shared/providers/Providers';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -17,8 +18,10 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
   return (
     <html lang={'en'}>
       <body className={`${inter.variable} container`}>
-        <Header />
-        <div className={'container-children'}>{children}</div>
+        <Providers>
+          <Header />
+          <div className={'container-children'}>{children}</div>
+        </Providers>
       </body>
     </html>
   );

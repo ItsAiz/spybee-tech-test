@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, Mail, User } from 'lucide-react';
 import { Spacing } from '@/shared/components/Spacing/Spacing';
@@ -15,12 +15,39 @@ import { HomeIllustration } from '@/shared/components/HomeIlustration/HomeIlustr
 import spybeeLogo from '@/shared/assets/spybee_logo_black.webp';
 import spybeeSite from '@/shared/assets/spybee-site.png';
 import styles from '../styles.module.css';
+import { useRegister } from '@/modules/auth/domain/hooks/useRegister';
+import { useLogout } from '@/modules/auth/domain/hooks/useLogout';
 
 const RegisterPage = () => {
   const router = useRouter();
-  const navigate = router.push;
+  const { register, loading } = useRegister();
+  const { logout } = useLogout();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });
+
+  const isFormValid = useMemo(() => {
+    const { name, email, password, confirmPassword } = form;
+    return (
+      name.trim() !== '' &&
+      email.trim() !== '' &&
+      password.length >= 8 &&
+      password === confirmPassword
+    );
+  }, [form]);
+
+  const onSubmit = () => {
+    if (form.password !== form.confirmPassword) {
+      alert('Las contraseñas no coinciden');
+      return;
+    }
+    register(form.name, form.email, form.password);
+  };
+
+  useEffect(() => {
+    logout(true);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Grid withSidebar>
@@ -55,6 +82,8 @@ const RegisterPage = () => {
               <Input
                 labelText={'Nombre completo'}
                 placeholder={'Ej. Juan Pérez'}
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
                 endIcon={<User size={18} color={'var(--neutral-400)'} />}
                 isFullWidth
               />
@@ -63,6 +92,8 @@ const RegisterPage = () => {
               <Input
                 labelText={'Correo electrónico'}
                 placeholder={'nombre@empresa.com'}
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
                 endIcon={<Mail size={18} color={'var(--neutral-400)'} />}
                 isFullWidth
               />
@@ -72,10 +103,11 @@ const RegisterPage = () => {
               <Input
                 labelText={'Contraseña'}
                 type={showPassword ? 'text' : 'password'}
-                placeholder={'Mínimo 8 caracteres'}
-                endIcon={showPassword ?
-                  <EyeOff size={18} color={'var(--secondary-500)'} /> :
-                  <Eye size={18} color={'var(--neutral-400)'} />
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                endIcon={showPassword
+                  ? <EyeOff size={18} color={'var(--secondary-500)'} />
+                  : <Eye size={18} color={'var(--neutral-400)'} />
                 }
                 onEndIconClick={() => setShowPassword(!showPassword)}
                 isFullWidth
@@ -86,10 +118,11 @@ const RegisterPage = () => {
               <Input
                 labelText={'Confirmar contraseña'}
                 type={showConfirmPassword ? 'text' : 'password'}
-                placeholder={'Repite tu contraseña'}
-                endIcon={showConfirmPassword ?
-                  <EyeOff size={18} color={'var(--secondary-500)'} /> :
-                  <Eye size={18} color={'var(--neutral-400)'} />
+                value={form.confirmPassword}
+                onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
+                endIcon={showConfirmPassword
+                  ? <EyeOff size={18} color={'var(--secondary-500)'} />
+                  : <Eye size={18} color={'var(--neutral-400)'} />
                 }
                 onEndIconClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 isFullWidth
@@ -98,21 +131,16 @@ const RegisterPage = () => {
             <GridItem span={12}>
               <Spacing spy={24} />
               <Button
-                text={'Crear cuenta'}
-                onClick={() => navigate('/projects')}
+                text={loading ? 'Procesando...' : 'Crear cuenta'}
+                onClick={onSubmit}
+                disabled={loading || !isFormValid}
                 isFullWidth
               />
             </GridItem>
             <GridItem span={12}>
               <div className={styles['auth-footer']}>
-                <Typography variant={'sm'} color={'muted'}>
-                  ¿Ya tienes una cuenta?
-                </Typography>
-                <Button
-                  variant={'btn-text'}
-                  text={'Inicia sesión'}
-                  onClick={() => navigate('/')}
-                />
+                <Typography variant={'sm'} color={'muted'}>¿Ya tienes una cuenta?</Typography>
+                <Button variant={'btn-text'} text={'Inicia sesión'} onClick={() => router.push('/')} />
               </div>
             </GridItem>
           </Grid>

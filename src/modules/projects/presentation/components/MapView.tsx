@@ -1,17 +1,18 @@
 import { useEffect, useRef } from 'react';
 import { Project } from '@modules/projects/data/models/Projects.interface';
 import mapboxgl from 'mapbox-gl';
+import { useMapBox } from '../../domain/hooks/useMapBox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN as string;
-
 export const MapView = ({ projects }: { projects: Project[] }) => {
+  const { token, loading } = useMapBox();
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<mapboxgl.Marker[]>([]);
 
   useEffect(() => {
-    if (!mapContainer.current) return;
+    if (loading || !token || !mapContainer.current) return;
+    mapboxgl.accessToken = token;
     if (!mapRef.current) {
       mapRef.current = new mapboxgl.Map({
         container: mapContainer.current,
@@ -49,7 +50,7 @@ export const MapView = ({ projects }: { projects: Project[] }) => {
         duration: 1000,
       });
     }
-  }, [projects]);
+  }, [loading, projects, token]);
 
   useEffect(() => {
     return () => {
