@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, Mail } from 'lucide-react';
@@ -15,11 +15,32 @@ import { HomeIllustration } from '@/shared/components/HomeIlustration/HomeIlustr
 import spybeeLogo from '@/shared/assets/spybee_logo_black.webp';
 import spybeeSite from '@/shared/assets/spybee-site.png';
 import styles from '../styles.module.css';
+import { useLogin } from '@/modules/auth/domain/hooks/useLogin';
+import { useLogout } from '@/modules/auth/domain/hooks/useLogout';
 
 const LoginPage = () => {
   const router = useRouter();
   const navigate = router.push;
+  const { login, loading, error } = useLogin();
+  const { logout } = useLogout();
   const [showPassword, setShowPassword] = useState(false);
+  const [form, setForm] = useState({ email: '', password: '' });
+
+  const isFormValid = useMemo(() => {
+    const { email, password } = form;
+    return email.includes('@') && password.length > 0;
+  }, [form]);
+
+  const handleLogin = () => {
+    if (isFormValid) {
+      login(form.email, form.password);
+    }
+  };
+  
+  useEffect(() => {
+    logout();
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Grid withSidebar>
@@ -47,13 +68,19 @@ const LoginPage = () => {
               style={{ marginBottom: '16px' }}
             />
             <Typography variant={'display'} weight={'bold'}>Bienvenido</Typography>
-            <Typography variant={'sm'} color={'muted'}>Gestiona tus proyectos con Spybee</Typography>
+            {error ? (
+              <Typography variant={'sm'} color={'error'}>{error}</Typography>
+            ) : (
+              <Typography variant={'sm'} color={'muted'}>Gestiona tus proyectos con Spybee</Typography>
+            )}
           </div>
           <Grid isSubGrid>
             <GridItem span={12}>
               <Input
                 labelText={'Correo electrónico'}
                 placeholder={'nombre@empresa.com'}
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
                 endIcon={<Mail size={18} color={'var(--neutral-400)'} />}
                 isFullWidth
               />
@@ -64,6 +91,8 @@ const LoginPage = () => {
                   labelText={'Contraseña'}
                   type={showPassword ? 'text' : 'password'}
                   placeholder={'••••••••'}
+                  value={form.password}
+                  onChange={(e) => setForm({ ...form, password: e.target.value })}
                   endIcon={showPassword ?
                     <EyeOff size={18} color={'var(--secondary-500)'} /> :
                     <Eye size={18} color={'var(--neutral-400)'} />
@@ -82,7 +111,8 @@ const LoginPage = () => {
               <Spacing spy={16} />
               <Button
                 text={'Iniciar sesión'}
-                onClick={() => router.push('/projects')}
+                onClick={() => handleLogin()}
+                disabled={loading || !isFormValid}
                 isFullWidth
               />
             </GridItem>
