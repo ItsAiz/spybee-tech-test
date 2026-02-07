@@ -2,12 +2,12 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { HexagonInitials } from '../HexagonInitials/HexagonInitials';
+import { ChevronDown } from 'lucide-react';
+import { useAuthStore } from '@/shared/data/store/useAuthStore';
+import { HexagonInitials } from '@/shared/components/HexagonInitials/HexagonInitials';
 import { Typography } from '@/shared/components/Typography/Typography';
 import spybeeLogo from '@/shared/assets/spybee_logo_black.webp';
 import styles from './styles.module.css';
-import { ChevronDown } from 'lucide-react';
-import { useAuthStore } from '@/shared/data/store/useAuthStore';
 
 export const Header = () => {
   const router = useRouter();
