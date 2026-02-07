@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/shared/data/store/useAuthStore';
 
@@ -6,22 +6,32 @@ export const useRouteGuard = () => {
   const { routes, isAuthenticated } = useAuthStore();
   const pathname = usePathname();
   const router = useRouter();
+  const [isHydrating, setIsHydrating] = useState(true);
 
   useEffect(() => {
-    if (!isAuthenticated) {
-      if (pathname !== '/' && pathname !== '/register') {
-        router.push('/');
+    const checkAuth = () => {
+      const isPublicRoute = pathname === '/' || pathname === '/register';
+      const token = typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+      if (!isAuthenticated && !token) {
+        if (!isPublicRoute) {
+          router.replace('/');
+        }
       }
-      return;
-    }
-    if (routes) {
-      const isAllowed = routes.some((r) => pathname.startsWith(r.path));
-      if (!isAllowed || pathname === '/') {
-        const defaultPath = routes[0]?.path || '/projects';
-        router.push(defaultPath);
+      else if (isAuthenticated && routes && routes.length > 0) {
+        const isAllowed = routes.some((r) => pathname.startsWith(r.path));
+        if (!isAllowed || pathname === '/') {
+          const defaultPath = routes[0]?.path || '/projects';
+          router.replace(defaultPath);
+        }
       }
-    }
+      setIsHydrating(false);
+    };
+
+    checkAuth();
   }, [pathname, routes, isAuthenticated, router]);
 
-  return { isAuthenticated, isVerifying: isAuthenticated && !routes };
+  return { 
+    isAuthenticated,
+    isVerifying: isHydrating || (isAuthenticated && !routes) 
+  };
 };
