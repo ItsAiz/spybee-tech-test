@@ -19,7 +19,7 @@ const log = (level: LogLevel, message: string, data?: unknown): void => {
   if (data !== undefined) payload.data = data;
   const isServer = typeof window === 'undefined';
 
-  if (process.env.ENV === 'development') {
+  if (process.env.NEXT_PUBLIC_REACT_ENV === 'development') {
     const colors = {
       info: '\x1b[32m',
       warn: '\x1b[33m',

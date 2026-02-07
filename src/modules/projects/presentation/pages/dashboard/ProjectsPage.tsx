@@ -28,8 +28,6 @@ import {
 } from '@/modules/projects/data/constants/Projects.constant';
 import mockProjects from '@/modules/projects/data/mocks/mock_data.json';
 import styles from './styles.module.css';
-import { useAuthStore } from '@/shared/data/store/useAuthStore';
-import { useRouter } from 'next/navigation';
 
 const StatItem = ({ count, label }: { count: number; label: string }) => (
   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
@@ -39,9 +37,7 @@ const StatItem = ({ count, label }: { count: number; label: string }) => (
 );
 
 const ProjectsPage = () => {
-  const router = useRouter();
   const { projects, setProjects } = useProjectStore();
-  const { isAuthenticated } = useAuthStore();
   const [currentPage, setCurrentPage] = useState(0);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [sortBy, setSortBy] = useState<SortByProject>('title');
@@ -185,10 +181,6 @@ const ProjectsPage = () => {
     fetchData();
     // eslint-disable-next-line
   }, []);
-
-  useEffect(() => {
-    if (!isAuthenticated) router.push('/');
-  }, [isAuthenticated, router]);
 
   const renderFilterButtons = () => (
     <div className={styles['action-filters-container']}>

@@ -2,15 +2,15 @@ import { NextResponse } from 'next/server';
 import { comparePassword } from '@/shared/domain/utils/Password.utils';
 import { generateToken } from '@/shared/domain/utils/Session.utils';
 import { logger } from '@/shared/domain/utils/Logger.utils';
-import { readDB } from '@/shared/domain/utils/FileHandler.utils';
 import { ROLE_ROUTES, UserRole } from '@/shared/data/config/Roles.config';
 import { User } from '@/shared/data/models/User.interface';
+import { readUsers } from '@/shared/domain/utils/KVHandler.utils';
 
 export const POST = async(req: Request) => {
   try {
     const { email, password } = await req.json();
 
-    const users: User[] = readDB();
+    const users: User[] = await readUsers();
     const user = users.find((u) => u.email === email);
 
     if (!user) {
@@ -43,6 +43,7 @@ export const POST = async(req: Request) => {
           rol: user.rol
         },
         routes: ROLE_ROUTES[user.rol as UserRole],
+        token
       }
     });
 

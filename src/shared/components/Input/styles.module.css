@@ -95,3 +95,17 @@
   padding: var(--space-2);
   color: var(--secondary-500);
 }
+
+.input-element:-webkit-autofill,
+.input-element:-webkit-autofill:hover, 
+.input-element:-webkit-autofill:focus, 
+.input-element:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px var(--color-bg) inset !important;
+  -webkit-text-fill-color: var(--color-text) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.input-element:autofill {
+  background-color: var(--color-bg) !important;
+  filter: none;
+}

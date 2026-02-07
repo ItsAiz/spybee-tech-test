@@ -19,6 +19,8 @@ export const useAuthStore = create<AuthState>()(
       setAuth: (user, routes) => set({ user, routes, isAuthenticated: true }),
       logout: () => set({ user: null, routes: null, isAuthenticated: false }),
     }),
-    { name: 'spybee-auth-storage' }
+    { 
+      name: 'spybee-auth-storage',
+    }
   )
 );
