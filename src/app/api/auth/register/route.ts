@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { hashPassword } from '@/shared/domain/utils/Password.utils';
 import { logger } from '@/shared/domain/utils/Logger.utils';
-import { readDB, writeDB } from '@/shared/domain/utils/FileHandler.utils';
 import { User } from '@/shared/data/models/User.interface';
+import { readUsers, writeUser } from '@/shared/domain/utils/KVHandler.utils';
 
 export const POST = async (req: Request) => {
   try {
@@ -10,7 +10,7 @@ export const POST = async (req: Request) => {
     if (!email || !password || !name) {
       return NextResponse.json({ message: 'Missing fields' }, { status: 400 });
     }
-    const users: User[] = readDB();
+    const users: User[] = await readUsers();
     if (users.some((u) => u.email === email)) {
       return NextResponse.json({ message: 'User already exists' }, { status: 400 });
     }
@@ -20,10 +20,9 @@ export const POST = async (req: Request) => {
       name,
       email,
       password: hashedPassword,
-      rol: 'basic', 
+      rol: 'basic',
     };
-    users.push(newUser);
-    writeDB(users);
+    await writeUser(newUser);
     logger.info(`[Auth] User registered: ${email}`);
     return NextResponse.json({ success: true, message: 'User created' });
   } catch (error) {

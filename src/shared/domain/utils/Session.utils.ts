@@ -1,5 +1,6 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { logger } from './Logger.utils';
+import 'server-only';
 
 const SECRET = process.env.JWT_SECRET as string;
 

@@ -14,18 +14,16 @@ export const AuthWrapper = ({ children }: AuthWrapperProps) => {
   if (isPublicRoute) {
     return <>{children}</>;
   }
-  if (isVerifying || !isAuthenticated) {
+  if (isVerifying) {
     return (
-      <div style={{ 
-        minHeight: '100vh', 
-        width: '100%', 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center' 
-      }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div className="spinner" /> 
       </div>
     );
   }
+  if (!isAuthenticated) {
+    return null; 
+  }
+
   return <>{children}</>;
 };

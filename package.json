@@ -12,6 +12,7 @@
     "@apollo/client": "^3.14.0",
     "@typescript-eslint/eslint-plugin": "^8.54.0",
     "@typescript-eslint/parser": "^8.54.0",
+    "@vercel/kv": "^3.0.0",
     "bcryptjs": "^3.0.3",
     "clsx": "^2.1.1",
     "graphql": "^16.12.0",
