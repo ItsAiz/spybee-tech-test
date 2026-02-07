@@ -7,10 +7,11 @@ import { Typography } from '@/shared/components/Typography/Typography';
 import spybeeLogo from '@/shared/assets/spybee_logo_black.webp';
 import styles from './styles.module.css';
 import { ChevronDown } from 'lucide-react';
+import { useAuthStore } from '@/shared/data/store/useAuthStore';
 
 export const Header = () => {
   const router = useRouter();
-  const currentUser = { name: 'Marco', lastName: 'González' };
+  const { isAuthenticated, user } = useAuthStore();
 
   return (
     <div className={styles['header-container']}>
@@ -25,14 +26,16 @@ export const Header = () => {
           priority
         />
       </div>
-      <div className={styles['user-profile']}>
-        <HexagonInitials users={[{ name: currentUser.name, lastName: currentUser.lastName }]} />
-        <div className={styles['user-info']}>
-          <Typography weight={'bold'} color={'white'}>{currentUser.name}</Typography>
-          <Typography variant={'xs'} color={'muted'}>{'Administrador'}</Typography>
+      {isAuthenticated && (
+        <div className={styles['user-profile']}>
+          <HexagonInitials users={[{ name: user?.name || '', lastName: '' }]} />
+          <div className={styles['user-info']}>
+            <Typography weight={'bold'} color={'white'}>{user?.name}</Typography>
+            <Typography variant={'xs'} color={'muted'}>{user?.rol}</Typography>
+          </div>
+          <ChevronDown size={16} color={'var(--neutral-50)'} />
         </div>
-        <ChevronDown size={16} color={'var(--neutral-50)'} />
-      </div>
+      )}
     </div>
   );
 };

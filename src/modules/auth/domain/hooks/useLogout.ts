@@ -6,6 +6,7 @@ export const useLogout = () => {
   const clearAuth = useAuthStore((state) => state.logout);
 
   const logout = async (isRegister?: boolean) => {
+    localStorage.removeItem('auth_token');
     try {
       await fetch('/api/auth/logout', { method: 'POST' });
     } catch (error) {

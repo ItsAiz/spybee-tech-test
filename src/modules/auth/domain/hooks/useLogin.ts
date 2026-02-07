@@ -23,7 +23,9 @@ export const useLogin = () => {
       const result = await response.json();
 
       if (response.ok && result.success) {
-        setAuth(result.data.user, result.data.routes);
+        const { user, routes, token } = result.data;
+        localStorage.setItem('auth_token', token);
+        setAuth(user, routes);
         
         router.push('/projects');
       } else {
